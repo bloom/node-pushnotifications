@@ -1,5 +1,5 @@
 {
-  "name": "node-pushnotifications",
+  "name": "node-pushnotifications-fcm",
   "description": "A cross-platform push service for node.js",
   "version": "2.1.1",
   "author": {
