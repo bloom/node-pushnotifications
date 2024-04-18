@@ -167,6 +167,7 @@ const buildApnsMessage = (data) => {
     mutableContent: data.mutableContent || 0,
     threadId: data.threadId,
     pushType: data.pushType,
+    interruptionLevel: data.interruptionLevel,
   });
 
   if (data.rawPayload) {
