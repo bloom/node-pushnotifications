@@ -125,12 +125,15 @@ const buildGcmMessage = (data, options) => {
     custom['content-available'] = 1;
   }
 
+  const ttl = extractTimeToLive(data);
+
   const message = new GcmMessage({
     collapseKey: data.collapseKey,
     priority: data.priority === 'normal' ? 'normal' : 'high',
     contentAvailable: data.silent ? true : data.contentAvailable || false,
     delayWhileIdle: data.delayWhileIdle || false,
-    timeToLive: extractTimeToLive(data),
+    timeToLive: ttl,
+    time_to_live: ttl,
     restrictedPackageName: data.restrictedPackageName,
     dryRun: data.dryRun || false,
     data:
