@@ -75,30 +75,6 @@ const containsValidRecipients = R.either(
 const propValueToSingletonArray = (propName) =>
   R.compose(R.of, R.prop(propName));
 
-const buildGcmNotification = (data) => {
-  const notification = data.fcm_notification || {
-    title: data.title,
-    body: data.body,
-    icon: data.icon,
-    image: data.image,
-    picture: data.picture,
-    style: data.style,
-    sound: data.sound,
-    badge: data.badge,
-    tag: data.tag,
-    color: data.color,
-    click_action: data.clickAction || data.category,
-    body_loc_key: data.locKey,
-    body_loc_args: toJSONorUndefined(data.locArgs),
-    title_loc_key: data.titleLocKey,
-    title_loc_args: toJSONorUndefined(data.titleLocArgs),
-    android_channel_id: data.android_channel_id,
-    notification_count: data.notificationCount || data.badge,
-  };
-
-  return notification;
-};
-
 const buildApnsMessage = (data) => {
   const message = new ApnsMessage({
     retryLimit: data.retries || -1,

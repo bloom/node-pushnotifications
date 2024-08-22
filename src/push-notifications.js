@@ -1,6 +1,5 @@
 /* eslint-disable import/no-import-module-exports */
 
-import sendGCM from './sendGCM';
 import APN from './sendAPN';
 import sendFCM from './sendFCM';
 import sendADM from './sendADM';
@@ -13,7 +12,6 @@ import {
   WEB_METHOD,
   WNS_METHOD,
   ADM_METHOD,
-  GCM_METHOD,
   APN_METHOD,
   FCM_METHOD,
 } from './constants';
@@ -21,9 +19,7 @@ import {
 class PN {
   constructor(options) {
     this.setOptions(options);
-    this.useFcmOrGcmMethod = this.settings.isLegacyGCM
-      ? GCM_METHOD
-      : FCM_METHOD;
+    this.useFcmOrGcmMethod = FCM_METHOD;
   }
 
   setOptions(opts) {
@@ -90,7 +86,6 @@ class PN {
 
   send(_regIds, data, callback) {
     const promises = [];
-    const regIdsGCM = [];
     const regIdsFCM = [];
     const regIdsAPN = [];
     const regIdsWNS = [];
@@ -105,8 +100,6 @@ class PN {
 
       if (pushMethod === WEB_METHOD) {
         regIdsWebPush.push(regId);
-      } else if (pushMethod === GCM_METHOD) {
-        regIdsGCM.push(regId);
       } else if (pushMethod === FCM_METHOD) {
         regIdsFCM.push(regId);
       } else if (pushMethod === WNS_METHOD) {
@@ -121,11 +114,6 @@ class PN {
     });
 
     try {
-      // Android GCM / FCM (Android/iOS) Legacy
-      if (regIdsGCM.length > 0) {
-        promises.push(this.sendWith(sendGCM, regIdsGCM, data));
-      }
-
       // FCM (Android/iOS)
       if (regIdsFCM.length > 0) {
         promises.push(this.sendWith(sendFCM, regIdsFCM, data));
@@ -203,6 +191,5 @@ module.exports = PN;
 module.exports.WEB = WEB_METHOD;
 module.exports.WNS = WNS_METHOD;
 module.exports.ADM = ADM_METHOD;
-module.exports.GCM = GCM_METHOD;
 module.exports.FCM = FCM_METHOD;
 module.exports.APN = APN_METHOD;

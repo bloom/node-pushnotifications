@@ -3,7 +3,6 @@
 import { expect } from 'chai'; // eslint-disable-line import/no-extraneous-dependencies
 import sinon from 'sinon'; // eslint-disable-line import/no-extraneous-dependencies
 import PN from '../../src';
-import sendGCM from '../../src/sendGCM';
 import sendADM from '../../src/sendADM';
 import sendWNS from '../../src/sendWNS';
 import sendWeb from '../../src/sendWeb';
@@ -53,7 +52,6 @@ describe('push-notifications: call with registration ids for android, ios, windo
           case 0:
           case 1:
           case 2:
-            expect(method).to.equal(sendGCM);
             break;
 
           case 3:
