@@ -1,7 +1,7 @@
 {
-  "name": "node-pushnotifications",
+  "name": "node-pushnotifications-fcm",
   "description": "A cross-platform push service for node.js",
-  "version": "2.1.1",
+  "version": "2.1.8",
   "author": {
     "name": "AppFeel",
     "email": "info@appfeel.com"
@@ -52,6 +52,7 @@
   },
   "dependencies": {
     "@parse/node-apn": "5.2.3",
+    "firebase-admin": "12.1.0",
     "node-adm": "0.9.1",
     "node-gcm": "1.1.3",
     "ramda": "0.28.0",
