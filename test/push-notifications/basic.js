@@ -12,7 +12,6 @@ import {
   WEB_METHOD,
   WNS_METHOD,
   ADM_METHOD,
-  GCM_METHOD,
   FCM_METHOD,
   APN_METHOD,
 } from '../../src/constants';
@@ -26,7 +25,6 @@ describe('push-notifications: instantiation and class properties', () => {
     it('should have send methods and settings options', () => {
       const pn = new PN();
       expect(pn).to.have.property('send');
-      expect(pn.settings).to.have.property('gcm');
       expect(pn.settings).to.have.property('fcm');
       expect(pn.settings).to.have.property('apn');
       expect(pn.settings).to.have.property('adm');
@@ -38,9 +36,6 @@ describe('push-notifications: instantiation and class properties', () => {
   describe('override options with constructor', () => {
     let pn;
     const settings = {
-      gcm: {
-        id: 'gcm id',
-      },
       apn: {
         token: {
           key: 'testKey',
@@ -95,10 +90,6 @@ describe('push-notifications: instantiation and class properties', () => {
   describe('setOptions', () => {
     let pn;
     const settings = {
-      gcm: {
-        id: '123',
-        phonegap: false,
-      },
       apn: {
         token: {
           key: 'test',
@@ -115,7 +106,6 @@ describe('push-notifications: instantiation and class properties', () => {
 
     it('should override the options', () => {
       expect(pn.settings.apn).to.eql(settings.apn);
-      expect(pn.settings.gcm).to.eql(settings.gcm);
       expect(pn.settings).to.have.property('adm');
       expect(pn.settings).to.have.property('wns');
     });
@@ -180,11 +170,11 @@ describe('push-notifications: instantiation and class properties', () => {
       },
       androidObject: {
         id: 'APA91bFQCD9Ndd8uVggMhj1usfeWsKIfGyBUWMprpZLGciWrMjS-77bIY24IMQNeEHzjidCcddnDxqYo-UEV03xw6ySmtIgQyzTqhSxhPGAi1maf6KDMAQGuUWc6L5Khze8YK9YrL9I_WD1gl49P3f_9hr08ZAS5Tw',
-        type: 'gcm',
+        type: 'fcm',
       },
       androidObjectWhatever: {
         id: 'whatever',
-        type: 'gcm',
+        type: 'fcm',
       },
       iosObject: {
         id: '43e798c31a282d129a34d84472bbdd7632562ff0732b58a85a27c5d9fdf59b69',
@@ -197,13 +187,13 @@ describe('push-notifications: instantiation and class properties', () => {
       unknownRegId: 'abcdef',
     };
 
-    it('Android / GCM', () => {
+    it('Android / FCM', () => {
       let pn = new PN({ isLegacyGCM: true });
       expect(pn.getPushMethodByRegId(regIds.androidRegId).regId).to.equal(
         regIds.androidRegId
       );
       expect(pn.getPushMethodByRegId(regIds.androidRegId).pushMethod).to.equal(
-        GCM_METHOD
+        FCM_METHOD
       );
 
       expect(
@@ -211,14 +201,14 @@ describe('push-notifications: instantiation and class properties', () => {
       ).to.equal(regIds.androidWithAdmSubstringRegId);
       expect(
         pn.getPushMethodByRegId(regIds.androidWithAdmSubstringRegId).pushMethod
-      ).to.equal(GCM_METHOD);
+      ).to.equal(FCM_METHOD);
 
       expect(
         pn.getPushMethodByRegId(regIds.androidWithAmznSubscringRegId).regId
       ).to.equal(regIds.androidWithAmznSubscringRegId);
       expect(
         pn.getPushMethodByRegId(regIds.androidWithAmznSubscringRegId).pushMethod
-      ).to.equal(GCM_METHOD);
+      ).to.equal(FCM_METHOD);
 
       const settings = {
         isAlwaysUseFCM: true,
@@ -229,14 +219,14 @@ describe('push-notifications: instantiation and class properties', () => {
         regIds.unknownRegId
       );
       expect(pn.getPushMethodByRegId(regIds.unknownRegId).pushMethod).to.equal(
-        GCM_METHOD
+        FCM_METHOD
       );
 
       expect(pn.getPushMethodByRegId(regIds.androidObject).regId).to.equal(
         regIds.androidObject.id
       );
       expect(pn.getPushMethodByRegId(regIds.androidObject).pushMethod).to.equal(
-        GCM_METHOD
+        FCM_METHOD
       );
 
       expect(
@@ -244,7 +234,7 @@ describe('push-notifications: instantiation and class properties', () => {
       ).to.equal(regIds.androidObjectWhatever.id);
       expect(
         pn.getPushMethodByRegId(regIds.androidObjectWhatever).pushMethod
-      ).to.equal(GCM_METHOD);
+      ).to.equal(FCM_METHOD);
     });
 
     it('Android / FCM', () => {
