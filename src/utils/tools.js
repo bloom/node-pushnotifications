@@ -1,6 +1,5 @@
 const R = require('ramda');
 const { Notification: ApnsMessage } = require('@parse/node-apn');
-const { Message: GcmMessage } = require('node-gcm');
 
 const { DEFAULT_TTL, GCM_MAX_TTL } = require('../constants');
 
@@ -100,53 +99,6 @@ const buildGcmNotification = (data) => {
   return notification;
 };
 
-const buildGcmMessage = (data, options) => {
-  const notification = buildGcmNotification(data);
-
-  let custom;
-  if (typeof data.custom === 'string') {
-    custom = {
-      message: data.custom,
-    };
-  } else if (typeof data.custom === 'object') {
-    custom = { ...data.custom };
-  } else {
-    custom = {
-      data: data.custom,
-    };
-  }
-
-  custom.title = custom.title || data.title;
-  custom.message = custom.message || data.body;
-  custom.sound = custom.sound || data.sound;
-  custom.icon = custom.icon || data.icon;
-  custom.msgcnt = custom.msgcnt || data.badge;
-  if (options.phonegap === true && data.contentAvailable) {
-    custom['content-available'] = 1;
-  }
-
-  const ttl = extractTimeToLive(data);
-
-  const message = new GcmMessage({
-    collapseKey: data.collapseKey,
-    priority: data.priority === 'normal' ? 'normal' : 'high',
-    contentAvailable: data.silent ? true : data.contentAvailable || false,
-    delayWhileIdle: data.delayWhileIdle || false,
-    timeToLive: ttl,
-    time_to_live: ttl,
-    restrictedPackageName: data.restrictedPackageName,
-    dryRun: data.dryRun || false,
-    data:
-      options.phonegap === true ? Object.assign(custom, notification) : custom,
-    notification:
-      options.phonegap === true || data.silent === true
-        ? undefined
-        : notification,
-  });
-
-  return message;
-};
-
 const buildApnsMessage = (data) => {
   const message = new ApnsMessage({
     retryLimit: data.retries || -1,
@@ -188,5 +140,4 @@ module.exports = {
   propValueToSingletonArray,
 
   buildApnsMessage,
-  buildGcmMessage,
 };
