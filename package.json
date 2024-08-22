@@ -90,6 +90,9 @@
       "node": true
     }
   },
+  "overrides": {
+    "axios": "1.7.4"
+  },
   "readmeFilename": "README.md",
   "homepage": "https://github.com/appfeel/node-pushnotifications",
   "license": "MIT",
